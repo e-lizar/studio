@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -18,6 +19,7 @@ import {
   Stethoscope,
   Users,
   LogOut,
+  CalendarPlus,
 } from "lucide-react";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -30,6 +32,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 const menuItems = [
   { href: "/dashboard/patient", label: "Patient Dashboard", icon: HeartPulse, roles: ['patient'] },
+  { href: "/dashboard/book-appointment", label: "Book Appointment", icon: CalendarPlus, roles: ['patient'] },
   { href: "/dashboard/doctor", label: "Doctor Dashboard", icon: Stethoscope, roles: ['doctor'] },
   { href: "/dashboard/symptom-checker", label: "Symptom Checker", icon: LayoutDashboard, roles: ['patient', 'doctor'] },
   { href: "/dashboard/admin", label: "Admin Panel", icon: Users, roles: ['admin'] },

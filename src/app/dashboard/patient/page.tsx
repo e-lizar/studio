@@ -46,11 +46,18 @@ export default function PatientDashboardPage() {
           <h2 className="text-2xl font-bold tracking-tight font-headline">Welcome back, Jane!</h2>
           <p className="text-muted-foreground">Here's a summary of your health journey.</p>
         </div>
-        <Button asChild>
-          <Link href="/dashboard/symptom-checker">
-            <Plus className="mr-2 h-4 w-4" /> Check Symptoms
-          </Link>
-        </Button>
+        <div className="flex gap-2">
+          <Button asChild>
+            <Link href="/dashboard/symptom-checker">
+              <Plus className="mr-2 h-4 w-4" /> Check Symptoms
+            </Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link href="/dashboard/book-appointment">
+              <Calendar className="mr-2 h-4 w-4" /> Book an Appointment
+            </Link>
+          </Button>
+        </div>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
