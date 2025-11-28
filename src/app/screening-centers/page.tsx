@@ -1,49 +1,71 @@
+
+"use client";
+
+import React, { useState } from 'react';
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from "@/components/ui/dialog";
 import { MapPin, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Image from 'next/image';
 
 const centers = [
     {
+        id: "nwh",
         name: "Nairobi Women's Hospital",
         location: "Nairobi, Hurlingham",
         contact: "+254 709 667000",
-        services: ["Screening", "Consultation", "Treatment"]
+        services: ["Screening", "Consultation", "Treatment"],
+        mapImage: "https://picsum.photos/seed/nwh-map/600/400"
     },
     {
+        id: "aku",
         name: "Aga Khan University Hospital",
         location: "Nairobi, Parklands",
         contact: "+254 20 3662000",
-        services: ["Screening", "Advanced Diagnostics", "Oncology"]
+        services: ["Screening", "Advanced Diagnostics", "Oncology"],
+        mapImage: "https://picsum.photos/seed/aku-map/600/400"
     },
     {
+        id: "mtrh",
         name: "Moi Teaching & Referral Hospital",
         location: "Eldoret",
         contact: "+254 722 209955",
-        services: ["Screening", "Referral Services", "Public Awareness"]
+        services: ["Screening", "Referral Services", "Public Awareness"],
+        mapImage: "https://picsum.photos/seed/mtrh-map/600/400"
     },
     {
+        id: "cgh",
         name: "Coast General Teaching & Referral Hospital",
         location: "Mombasa",
         contact: "+254 722 208766",
-        services: ["Screening", "Consultation", "Surgical Oncology"]
+        services: ["Screening", "Consultation", "Surgical Oncology"],
+        mapImage: "https://picsum.photos/seed/cgh-map/600/400"
     },
     {
+        id: "jootrh",
         name: "Jaramogi Oginga Odinga Teaching & Referral Hospital",
         location: "Kisumu",
         contact: "+254 57 2021089",
-        services: ["Screening", "Gynecologic Oncology", "Patient Support"]
+        services: ["Screening", "Gynecologic Oncology", "Patient Support"],
+        mapImage: "https://picsum.photos/seed/jootrh-map/600/400"
     },
     {
+        id: "gcrh",
         name: "Garissa County Referral Hospital",
         location: "Garissa",
         contact: "+254 724 543210",
-        services: ["Screening", "Community Outreach", "Consultation"]
+        services: ["Screening", "Community Outreach", "Consultation"],
+        mapImage: "https://picsum.photos/seed/gcrh-map/600/400"
     }
 ];
 
+type Center = typeof centers[0];
+
 export default function ScreeningCentersPage() {
+  const [selectedCenter, setSelectedCenter] = useState<Center | null>(null);
+
   return (
     <div className="flex flex-col min-h-screen">
       <SiteHeader />
@@ -86,9 +108,44 @@ export default function ScreeningCentersPage() {
                                         </ul>
                                     </div>
                                 </div>
-                                <Button variant="outline" className="mt-4 w-full">
-                                    View Details
-                                </Button>
+                                <Dialog>
+                                  <DialogTrigger asChild>
+                                    <Button variant="outline" className="mt-4 w-full" onClick={() => setSelectedCenter(center)}>
+                                        View Details
+                                    </Button>
+                                  </DialogTrigger>
+                                  {selectedCenter && selectedCenter.id === center.id && (
+                                    <DialogContent className="sm:max-w-[625px]">
+                                        <DialogHeader>
+                                            <DialogTitle className='font-headline'>{selectedCenter.name}</DialogTitle>
+                                            <DialogDescription>
+                                                <div className="flex items-center gap-2 text-muted-foreground mt-2">
+                                                    <MapPin className="h-4 w-4" />
+                                                    <span>{selectedCenter.location}</span>
+                                                </div>
+                                                <div className="flex items-center gap-2 text-muted-foreground">
+                                                    <Phone className="h-4 w-4" />
+                                                    <span>{selectedCenter.contact}</span>
+                                                </div>
+                                            </DialogDescription>
+                                        </DialogHeader>
+                                        <div className="grid gap-4 py-4">
+                                            <div>
+                                                <h4 className="font-semibold mb-2">Services Offered</h4>
+                                                <ul className="list-disc list-inside text-muted-foreground text-sm space-y-1">
+                                                    {selectedCenter.services.map(service => <li key={service}>{service}</li>)}
+                                                </ul>
+                                            </div>
+                                            <div>
+                                                <h4 className="font-semibold mb-2">Location Map</h4>
+                                                <div className="aspect-video w-full rounded-lg overflow-hidden border">
+                                                    <Image src={selectedCenter.mapImage} alt={`Map for ${selectedCenter.name}`} width={600} height={400} className="w-full h-full object-cover" data-ai-hint="street map" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </DialogContent>
+                                  )}
+                                </Dialog>
                             </CardContent>
                         </Card>
                     ))}
