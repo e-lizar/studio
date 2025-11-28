@@ -58,7 +58,11 @@ export default function SignupPage() {
         router.push("/dashboard/doctor");
       }
     } catch (error: any) {
-      setError(error.message);
+      if (error.code === 'auth/email-already-in-use') {
+        setError("An account with this email already exists. Please try logging in.");
+      } else {
+        setError(error.message);
+      }
       console.error("Signup Error:", error);
     }
   };
