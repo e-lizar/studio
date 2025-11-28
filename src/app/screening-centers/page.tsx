@@ -150,18 +150,6 @@ export default function ScreeningCentersPage() {
                                                     {selectedCenter.services.map(service => <li key={service}>{service}</li>)}
                                                 </ul>
                                             </div>
-                                            <div>
-                                                <h4 className="font-semibold mb-2">Location Map</h4>
-                                                <div className="aspect-video w-full rounded-lg overflow-hidden border">
-                                                    <Image src={selectedCenter.mapImage} alt={`Map for ${selectedCenter.name}`} width={600} height={400} className="w-full h-full object-cover" data-ai-hint="street map" />
-                                                </div>
-                                                <Button asChild className="w-full mt-4">
-                                                  <Link href={`https://www.google.com/maps/search/?api=1&query=${selectedCenter.lat},${selectedCenter.lng}`} target="_blank" rel="noopener noreferrer">
-                                                    <Map className="mr-2 h-4 w-4" />
-                                                    View on Google Maps
-                                                  </Link>
-                                                </Button>
-                                            </div>
                                         </div>
                                     </DialogContent>
                                   )}
