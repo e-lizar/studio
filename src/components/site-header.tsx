@@ -10,6 +10,7 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
+  { href: "/dashboard", label: "Dashboard" },
   { href: "/awareness", label: "Awareness" },
   { href: "/screening-centers", label: "Screening Centers" },
   { href: "/about", label: "About Us" },
@@ -36,7 +37,7 @@ export function SiteHeader() {
               href={link.href}
               className={cn(
                 "transition-colors hover:text-foreground/80",
-                pathname === link.href ? "text-foreground" : "text-foreground/60"
+                pathname.startsWith(link.href) ? "text-foreground" : "text-foreground/60"
               )}
             >
               {link.label}
@@ -77,7 +78,7 @@ export function SiteHeader() {
                         onClick={() => setOpen(false)}
                         className={cn(
                           "text-lg",
-                          pathname === link.href ? "text-primary font-semibold" : "text-muted-foreground"
+                          pathname.startsWith(link.href) ? "text-primary font-semibold" : "text-muted-foreground"
                         )}
                       >
                         {link.label}
