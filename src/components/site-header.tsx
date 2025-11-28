@@ -3,7 +3,7 @@
 import { HeartPulse } from "lucide-react";
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet";
 import { Menu } from "lucide-react";
 import React from "react";
 import { usePathname } from "next/navigation";
@@ -63,6 +63,9 @@ export function SiteHeader() {
                 </Button>
               </SheetTrigger>
               <SheetContent side="right">
+                <SheetHeader>
+                    <SheetTitle className="sr-only">Menu</SheetTitle>
+                </SheetHeader>
                 <div className="flex flex-col h-full">
                   <div className="flex items-center mb-8">
                     <Link href="/" className="flex items-center space-x-2" onClick={() => setOpen(false)}>
