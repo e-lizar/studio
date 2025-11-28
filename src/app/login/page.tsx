@@ -15,10 +15,11 @@ import { HeartPulse } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import React, { useState } from "react";
-import { useAuth, initiateEmailSignIn } from "@/firebase";
+import { useAuth, initiateEmailSignIn, useUser } from "@/firebase";
 import { useRouter } from "next/navigation";
 import { doc, getDoc } from "firebase/firestore";
 import { useFirestore } from "@/firebase";
+import { User } from "firebase/auth";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -27,37 +28,46 @@ export default function LoginPage() {
   const auth = useAuth();
   const router = useRouter();
   const firestore = useFirestore();
+  const { user, isUserLoading } = useUser();
 
-  const handleLogin = async (e: React.FormEvent) => {
+  React.useEffect(() => {
+    const checkRoleAndRedirect = async (user: User) => {
+        if (user) {
+            let docRef = doc(firestore, "roles_admin", user.uid);
+            let docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                router.push("/dashboard/admin");
+                return;
+            }
+    
+            docRef = doc(firestore, "doctors", user.uid);
+            docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                router.push("/dashboard/doctor");
+                return;
+            }
+    
+            router.push("/dashboard/patient");
+        }
+    };
+    if (user && !isUserLoading) {
+        checkRoleAndRedirect(user);
+    }
+  }, [user, isUserLoading, firestore, router]);
+
+
+  const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-
-      if (user) {
-        // Check admin collection
-        let docRef = doc(firestore, "roles_admin", user.uid);
-        let docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          router.push("/dashboard/admin");
-          return;
-        }
-
-        // Check doctor collection
-        docRef = doc(firestore, "doctors", user.uid);
-        docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          router.push("/dashboard/doctor");
-          return;
-        }
-
-        // Default to patient
-        router.push("/dashboard/patient");
-      }
+        initiateEmailSignIn(auth, email, password);
     } catch (error: any) {
-      setError(error.message);
-      console.error("Login Error:", error);
+        if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
+            setError("Invalid email or password. Please try again.");
+        } else {
+            setError(error.message);
+        }
+        console.error("Login Error:", error);
     }
   };
 
