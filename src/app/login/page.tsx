@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Shield } from "lucide-react";
+import { HeartPulse } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 
@@ -22,7 +22,7 @@ export default function LoginPage() {
       <main className="flex-1 flex items-center justify-center p-4">
         <Card className="w-full max-w-sm mx-auto shadow-xl">
           <CardHeader className="text-center">
-            <Shield className="mx-auto h-12 w-12 text-primary" />
+            <HeartPulse className="mx-auto h-12 w-12 text-primary" />
             <CardTitle className="text-2xl mt-4 font-headline">Welcome Back</CardTitle>
             <CardDescription>
               Enter your credentials to access your account.

@@ -1,6 +1,6 @@
 "use client";
 
-import { Shield } from "lucide-react";
+import { HeartPulse } from "lucide-react";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
@@ -24,7 +24,7 @@ export function SiteHeader() {
       <div className="container flex h-16 items-center">
         <div className="mr-6 flex items-center">
           <Link href="/" className="flex items-center space-x-2">
-            <Shield className="h-6 w-6 text-primary" />
+            <HeartPulse className="h-6 w-6 text-primary" />
             <span className="font-bold inline-block">ShujaaCare</span>
           </Link>
         </div>
@@ -65,7 +65,7 @@ export function SiteHeader() {
                 <div className="flex flex-col h-full">
                   <div className="flex items-center mb-8">
                     <Link href="/" className="flex items-center space-x-2" onClick={() => setOpen(false)}>
-                      <Shield className="h-6 w-6 text-primary" />
+                      <HeartPulse className="h-6 w-6 text-primary" />
                       <span className="font-bold">ShujaaCare</span>
                     </Link>
                   </div>

@@ -13,14 +13,10 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import {
-  Shield,
+  HeartPulse,
   LayoutDashboard,
   Stethoscope,
-  HeartPulse,
   Users,
-  BookOpen,
-  MapPin,
-  Settings,
   LogOut,
 } from "lucide-react";
 import Link from "next/link";
@@ -46,7 +42,7 @@ export default function DashboardLayout({
       <Sidebar>
         <SidebarHeader>
           <div className="flex items-center gap-2">
-            <Shield className="size-6 text-primary" />
+            <HeartPulse className="size-6 text-primary" />
             <h2 className="text-lg font-semibold tracking-tighter text-foreground group-data-[collapsible=icon]:hidden">
               ShujaaCare
             </h2>
