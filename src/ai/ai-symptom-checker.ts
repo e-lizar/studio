@@ -18,12 +18,6 @@ const AISymptomCheckerInputSchema = z.object({
   symptoms: z
     .string()
     .describe("A comma-separated list of symptoms the user is experiencing."),
-  additionalInfo: z
-    .string()
-    .optional()
-    .describe(
-      'Any additional information the user wants to provide about their health or concerns.'
-    ),
 });
 export type AISymptomCheckerInput = z.infer<typeof AISymptomCheckerInputSchema>;
 
@@ -52,12 +46,11 @@ const prompt = ai.definePrompt({
   name: 'aiSymptomCheckerPrompt',
   input: {schema: AISymptomCheckerInputSchema},
   output: {schema: AISymptomCheckerOutputSchema},
-  prompt: `You are an AI assistant designed to provide early risk assessments for potential ovarian cancer based on user-reported symptoms and information.
+  prompt: `You are an AI assistant designed to provide early risk assessments for potential ovarian cancer based on user-reported symptoms.
 
   Analyze the following information provided by the user:
 
   Symptoms: {{{symptoms}}}
-  Additional Information: {{{additionalInfo}}}
 
   Based on this information, provide a risk assessment, personalized advice on next steps, and a confidence level for the assessment.
   Risk Assessment: Assess the user's risk of having ovarian cancer (Low, Medium, High).

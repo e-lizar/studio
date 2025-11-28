@@ -15,7 +15,6 @@ import { analyzeSymptoms } from "./actions";
 import { AlertCircle, Bot, Loader2 } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 
 export default function SymptomCheckerPage() {
   const [state, formAction, isPending] = useActionState(analyzeSymptoms, null);
@@ -27,7 +26,7 @@ export default function SymptomCheckerPage() {
           <CardHeader>
             <CardTitle className="font-headline flex items-center gap-2"><Bot className="h-6 w-6 text-primary"/> AI Symptom Analysis</CardTitle>
             <CardDescription>
-              Describe your symptoms and relevant medical history below. Our AI will provide a preliminary analysis to help you understand potential concerns. This is not a medical diagnosis.
+              Describe your symptoms below. Our AI will provide a preliminary analysis to help you understand potential concerns. This is not a medical diagnosis.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -39,15 +38,6 @@ export default function SymptomCheckerPage() {
                   placeholder="e.g., For the past 2 weeks, I've had persistent bloating and feel full quickly..."
                   rows={6}
                   required
-                />
-            </div>
-            <div className="space-y-2">
-                <Label htmlFor="additionalInfo">Additional Information (Optional)</Label>
-                <Textarea
-                    id="additionalInfo"
-                    name="additionalInfo"
-                    placeholder="e.g., I also have a history of endometriosis."
-                    rows={3}
                 />
             </div>
           </CardContent>

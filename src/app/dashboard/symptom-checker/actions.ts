@@ -14,7 +14,6 @@ export async function analyzeSymptoms(
   formData: FormData,
 ): Promise<FormState> {
   const symptoms = formData.get('symptoms') as string;
-  const additionalInfo = formData.get('additionalInfo') as string;
 
   if (!symptoms || symptoms.trim().length < 10) {
     return { success: false, error: "Please provide a more detailed description of your symptoms." };
@@ -22,8 +21,7 @@ export async function analyzeSymptoms(
 
   try {
     const input: AISymptomCheckerInput = {
-        symptoms,
-        additionalInfo
+        symptoms
     };
     const result = await aiSymptomChecker(input);
     return { success: true, data: result };
