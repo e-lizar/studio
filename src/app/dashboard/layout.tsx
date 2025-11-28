@@ -58,20 +58,27 @@ function AuthRedirect({ children }: { children: React.ReactNode }) {
       let docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         setRole("admin");
-        return;
+        return "admin";
       }
 
       docRef = doc(firestore, "doctors", user.uid);
       docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         setRole("doctor");
-        return;
+        return "doctor";
       }
       setRole("patient");
+      return "patient";
     };
 
-    getRole(user);
-  }, [user, isUserLoading, router, firestore]);
+    getRole(user).then(userRole => {
+      if (currentPath === '/dashboard') {
+        if (userRole === 'admin') router.replace('/dashboard/admin');
+        else if (userRole === 'doctor') router.replace('/dashboard/doctor');
+        else router.replace('/dashboard/patient');
+      }
+    });
+  }, [user, isUserLoading, router, firestore, currentPath]);
 
   if (isUserLoading || !user || !role) {
     return (
@@ -89,7 +96,7 @@ function AuthRedirect({ children }: { children: React.ReactNode }) {
 
   const allowedRoutes = menuItems.filter(item => item.roles.includes(role)).map(item => item.href);
   
-  if (currentPath === '/dashboard' || !allowedRoutes.some(route => currentPath.startsWith(route))) {
+  if (!allowedRoutes.some(route => currentPath.startsWith(route))) {
     if(role === 'admin') router.replace('/dashboard/admin');
     else if(role === 'doctor') router.replace('/dashboard/doctor');
     else if(role === 'patient') router.replace('/dashboard/patient');
