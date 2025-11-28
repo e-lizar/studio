@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import {
   Sidebar,
@@ -39,63 +39,68 @@ function AuthRedirect({ children }: { children: React.ReactNode }) {
   const { user, isUserLoading } = useUser();
   const router = useRouter();
   const firestore = useFirestore();
-  const [role, setRole] = React.useState<string | null>(null);
+  const [role, setRole] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!isUserLoading && !user) {
-      router.replace('/login');
-    } else if (user) {
-      const getRole = async (user: User) => {
-        let docRef = doc(firestore, "roles_admin", user.uid);
-        let docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          setRole("admin");
-          return;
-        }
+    if (isUserLoading) return;
 
-        docRef = doc(firestore, "doctors", user.uid);
-        docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          setRole("doctor");
-          return;
-        }
-        setRole("patient");
-      };
-      getRole(user);
+    if (!user) {
+      router.replace('/login');
+      return;
     }
+
+    const getRole = async (user: User) => {
+      let docRef = doc(firestore, "roles_admin", user.uid);
+      let docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        setRole("admin");
+        return;
+      }
+
+      docRef = doc(firestore, "doctors", user.uid);
+      docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        setRole("doctor");
+        return;
+      }
+      setRole("patient");
+    };
+
+    getRole(user);
   }, [user, isUserLoading, router, firestore]);
 
   if (isUserLoading || !user || !role) {
     return (
-        <div className="flex h-screen w-screen items-center justify-center">
-            <div className="flex flex-col items-center gap-4">
-                <Skeleton className="h-16 w-16 rounded-full" />
-                <div className="space-y-2">
-                    <Skeleton className="h-4 w-[250px]" />
-                    <Skeleton className="h-4 w-[200px]" />
-                </div>
-            </div>
+      <div className="flex h-screen w-screen items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <Skeleton className="h-16 w-16 rounded-full" />
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-[250px]" />
+            <Skeleton className="h-4 w-[200px]" />
+          </div>
         </div>
+      </div>
     );
   }
 
   const currentPath = usePathname();
   const allowedRoutes = menuItems.filter(item => item.roles.includes(role)).map(item => item.href);
-  if (!allowedRoutes.includes(currentPath)) {
-      if(role === 'admin') router.replace('/dashboard/admin');
-      if(role === 'doctor') router.replace('/dashboard/doctor');
-      if(role === 'patient') router.replace('/dashboard/patient');
-      return (
-        <div className="flex h-screen w-screen items-center justify-center">
-             <div className="flex flex-col items-center gap-4">
-                <Skeleton className="h-16 w-16 rounded-full" />
-                <div className="space-y-2">
-                    <Skeleton className="h-4 w-[250px]" />
-                    <Skeleton className="h-4 w-[200px]" />
-                </div>
-            </div>
+  
+  if (currentPath === '/dashboard' || !allowedRoutes.some(route => currentPath.startsWith(route))) {
+    if(role === 'admin') router.replace('/dashboard/admin');
+    else if(role === 'doctor') router.replace('/dashboard/doctor');
+    else if(role === 'patient') router.replace('/dashboard/patient');
+    return (
+      <div className="flex h-screen w-screen items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <Skeleton className="h-16 w-16 rounded-full" />
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-[250px]" />
+            <Skeleton className="h-4 w-[200px]" />
+          </div>
         </div>
-      );
+      </div>
+    );
   }
 
   return <>{children}</>;
@@ -110,7 +115,7 @@ export default function DashboardLayout({
   const pathname = usePathname();
   const auth = useAuth();
   const { user, isUserLoading } = useUser();
-  const [userRole, setUserRole] = React.useState<string | null>(null);
+  const [userRole, setUserRole] = useState<string | null>(null);
   const firestore = useFirestore();
   const router = useRouter();
 
@@ -138,8 +143,8 @@ export default function DashboardLayout({
     }
   }, [user, firestore]);
 
-  const handleLogout = () => {
-    signOut(auth);
+  const handleLogout = async () => {
+    await signOut(auth);
     router.push('/login');
   };
 
@@ -170,7 +175,7 @@ export default function DashboardLayout({
                   <SidebarMenuItem key={item.href}>
                     <SidebarMenuButton
                       asChild
-                      isActive={pathname === item.href}
+                      isActive={pathname.startsWith(item.href)}
                       tooltip={item.label}
                     >
                       <Link href={item.href}>
@@ -188,7 +193,7 @@ export default function DashboardLayout({
           <header className="sticky top-0 z-40 flex h-16 items-center justify-between border-b bg-background/90 px-4 backdrop-blur-sm sm:px-8">
               <SidebarTrigger className="md:hidden" />
               <div className="flex-1 text-center text-lg font-bold md:text-left">
-                  {menuItems.find(item => item.href === pathname)?.label || "Dashboard"}
+                  {menuItems.find(item => pathname.startsWith(item.href))?.label || "Dashboard"}
               </div>
               <div className="flex items-center gap-4">
                   <Avatar>
