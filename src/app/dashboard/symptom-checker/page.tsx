@@ -31,16 +31,6 @@ export default function SymptomCheckerPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-             <div className="grid sm:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                    <Label htmlFor="age">Your Age</Label>
-                    <Input id="age" name="age" type="number" placeholder="e.g., 45" required />
-                </div>
-                 <div className="space-y-2">
-                    <Label htmlFor="familyHistory">Family History</Label>
-                    <Input id="familyHistory" name="familyHistory" placeholder="e.g., Mother had breast cancer" />
-                </div>
-             </div>
             <div className="space-y-2">
                 <Label htmlFor="symptoms">Symptoms</Label>
                 <Textarea

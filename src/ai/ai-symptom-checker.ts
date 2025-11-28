@@ -18,12 +18,6 @@ const AISymptomCheckerInputSchema = z.object({
   symptoms: z
     .string()
     .describe("A comma-separated list of symptoms the user is experiencing."),
-  age: z.number().describe('The age of the user in years.'),
-  familyHistory: z
-    .string()
-    .describe(
-      'A description of the user\'s family history of ovarian cancer or related cancers.'
-    ),
   additionalInfo: z
     .string()
     .optional()
@@ -63,8 +57,6 @@ const prompt = ai.definePrompt({
   Analyze the following information provided by the user:
 
   Symptoms: {{{symptoms}}}
-  Age: {{{age}}}
-  Family History: {{{familyHistory}}}
   Additional Information: {{{additionalInfo}}}
 
   Based on this information, provide a risk assessment, personalized advice on next steps, and a confidence level for the assessment.
