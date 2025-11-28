@@ -14,8 +14,54 @@ import { Label } from "@/components/ui/label";
 import { HeartPulse } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import React, { useState } from "react";
+import { useAuth, initiateEmailSignIn } from "@/firebase";
+import { useRouter } from "next/navigation";
+import { doc, getDoc } from "firebase/firestore";
+import { useFirestore } from "@/firebase";
 
 export default function LoginPage() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const auth = useAuth();
+  const router = useRouter();
+  const firestore = useFirestore();
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      if (user) {
+        // Check admin collection
+        let docRef = doc(firestore, "roles_admin", user.uid);
+        let docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          router.push("/dashboard/admin");
+          return;
+        }
+
+        // Check doctor collection
+        docRef = doc(firestore, "doctors", user.uid);
+        docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          router.push("/dashboard/doctor");
+          return;
+        }
+
+        // Default to patient
+        router.push("/dashboard/patient");
+      }
+    } catch (error: any) {
+      setError(error.message);
+      console.error("Login Error:", error);
+    }
+  };
+
+
   return (
     <div className="flex flex-col min-h-screen">
       <SiteHeader />
@@ -29,37 +75,48 @@ export default function LoginPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid gap-4">
-              <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="m@example.com"
-                  required
-                />
-              </div>
-              <div className="grid gap-2">
-                <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
-                  <Link
-                    href="#"
-                    className="ml-auto inline-block text-sm underline"
-                  >
-                    Forgot your password?
-                  </Link>
+            <form onSubmit={handleLogin}>
+              <div className="grid gap-4">
+                <div className="grid gap-2">
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="m@example.com"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
                 </div>
-                <Input id="password" type="password" required />
+                <div className="grid gap-2">
+                  <div className="flex items-center">
+                    <Label htmlFor="password">Password</Label>
+                    <Link
+                      href="#"
+                      className="ml-auto inline-block text-sm underline"
+                    >
+                      Forgot your password?
+                    </Link>
+                  </div>
+                  <Input 
+                    id="password" 
+                    type="password" 
+                    required 
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </div>
+                {error && <p className="text-destructive text-sm">{error}</p>}
+                <Button type="submit" className="w-full">
+                  Login
+                </Button>
               </div>
-              <Button type="submit" className="w-full">
-                <Link href="/dashboard/patient">Login</Link>
-              </Button>
-            </div>
+            </form>
             <div className="mt-4 text-center text-sm">
               Don&apos;t have an account?{" "}
               <Link href="/signup" className="underline">
                 Sign up
-              </Link>            
+              </Link>
             </div>
           </CardContent>
         </Card>
