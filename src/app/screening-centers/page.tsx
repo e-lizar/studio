@@ -6,9 +6,10 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from "@/components/ui/dialog";
-import { MapPin, Phone } from "lucide-react";
+import { Map, MapPin, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from 'next/image';
+import Link from 'next/link';
 
 const centers = [
     {
@@ -17,7 +18,9 @@ const centers = [
         location: "Nairobi, Hurlingham",
         contact: "+254 709 667000",
         services: ["Screening", "Consultation", "Treatment"],
-        mapImage: "https://picsum.photos/seed/nwh-map/600/400"
+        mapImage: "https://images.unsplash.com/photo-1596701552309-913a0e69884a?q=80&w=1080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        lat: -1.2921,
+        lng: 36.8219
     },
     {
         id: "aku",
@@ -25,7 +28,9 @@ const centers = [
         location: "Nairobi, Parklands",
         contact: "+254 20 3662000",
         services: ["Screening", "Advanced Diagnostics", "Oncology"],
-        mapImage: "https://picsum.photos/seed/aku-map/600/400"
+        mapImage: "https://images.unsplash.com/photo-1554797587-b50552789485?q=80&w=1080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        lat: -1.2642,
+        lng: 36.8148
     },
     {
         id: "mtrh",
@@ -33,7 +38,9 @@ const centers = [
         location: "Eldoret",
         contact: "+254 722 209955",
         services: ["Screening", "Referral Services", "Public Awareness"],
-        mapImage: "https://picsum.photos/seed/mtrh-map/600/400"
+        mapImage: "https://images.unsplash.com/photo-1596701552309-913a0e69884a?q=80&w=1080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        lat: 0.5143,
+        lng: 35.2698
     },
     {
         id: "cgh",
@@ -41,7 +48,9 @@ const centers = [
         location: "Mombasa",
         contact: "+254 722 208766",
         services: ["Screening", "Consultation", "Surgical Oncology"],
-        mapImage: "https://picsum.photos/seed/cgh-map/600/400"
+        mapImage: "https://images.unsplash.com/photo-1554797587-b50552789485?q=80&w=1080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        lat: -4.0435,
+        lng: 39.6682
     },
     {
         id: "jootrh",
@@ -49,7 +58,9 @@ const centers = [
         location: "Kisumu",
         contact: "+254 57 2021089",
         services: ["Screening", "Gynecologic Oncology", "Patient Support"],
-        mapImage: "https://picsum.photos/seed/jootrh-map/600/400"
+        mapImage: "https://images.unsplash.com/photo-1596701552309-913a0e69884a?q=80&w=1080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        lat: -0.0917,
+        lng: 34.7680
     },
     {
         id: "gcrh",
@@ -57,7 +68,9 @@ const centers = [
         location: "Garissa",
         contact: "+254 724 543210",
         services: ["Screening", "Community Outreach", "Consultation"],
-        mapImage: "https://picsum.photos/seed/gcrh-map/600/400"
+        mapImage: "https://images.unsplash.com/photo-1554797587-b50552789485?q=80&w=1080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        lat: -0.4573,
+        lng: 39.6433
     }
 ];
 
@@ -142,6 +155,12 @@ export default function ScreeningCentersPage() {
                                                 <div className="aspect-video w-full rounded-lg overflow-hidden border">
                                                     <Image src={selectedCenter.mapImage} alt={`Map for ${selectedCenter.name}`} width={600} height={400} className="w-full h-full object-cover" data-ai-hint="street map" />
                                                 </div>
+                                                <Button asChild className="w-full mt-4">
+                                                  <Link href={`https://www.google.com/maps/search/?api=1&query=${selectedCenter.lat},${selectedCenter.lng}`} target="_blank" rel="noopener noreferrer">
+                                                    <Map className="mr-2 h-4 w-4" />
+                                                    View on Google Maps
+                                                  </Link>
+                                                </Button>
                                             </div>
                                         </div>
                                     </DialogContent>
