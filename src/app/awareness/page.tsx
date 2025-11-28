@@ -26,12 +26,9 @@ export default function AwarenessPage() {
         <section className="w-full py-12 md:py-24 lg:py-32">
           <div className="container grid md:grid-cols-3 gap-12 px-4 md:px-6">
             <div className="md:col-span-2 prose prose-lg max-w-none dark:prose-invert">
-                <h2 className="font-headline">Understanding Ovarian Cancer</h2>
+                <h2 className="font-headline">What Is Ovarian Cancer?</h2>
                 <p>
-                    Ovarian cancer is a disease that originates in the ovaries, the female reproductive glands responsible for producing eggs (ova) and the hormones estrogen and progesterone. The human body has two ovaries, one on each side of the uterus. Sometimes, cells in an ovary can grow abnormally and form tumors. These tumors can be benign (non-cancerous) or malignant (cancerous). When a tumor is malignant, it is classified as ovarian cancer.
-                </p>
-                <p>
-                    This cancer is often called a "silent killer" because its early symptoms are frequently subtle, non-specific, and can be mistaken for other, more common conditions. This can lead to a delayed diagnosis, often at a stage when the cancer has spread beyond the ovaries, making it more difficult to treat effectively.
+                    Ovarian cancer is a disease that originates in the ovaries, the female reproductive glands responsible for producing eggs (ova) and the hormones estrogen and progesterone. The human body has two ovaries, one on each side of the uterus. Sometimes, cells in an ovary can grow abnormally and form tumors. These tumors can be benign (non-cancerous) or malignant (cancerous). When a tumor is malignant, it is classified as ovarian cancer. This cancer is often called a "silent killer" because its early symptoms are frequently subtle, non-specific, and can be mistaken for other, more common conditions. This can lead to a delayed diagnosis, often at a stage when the cancer has spread beyond the ovaries, making it more difficult to treat effectively.
                 </p>
                 <p>
                     There are several types of ovarian cancer, categorized by the type of cell from which they originate:
@@ -41,8 +38,6 @@ export default function AwarenessPage() {
                     <li><strong>Germ cell tumors:</strong> These develop from the cells that produce eggs. They are rare and tend to occur in younger women and teenagers.</li>
                     <li><strong>Stromal tumors:</strong> These originate in the structural tissue cells that hold the ovary together and produce hormones. They are also quite rare.</li>
                 </ul>
-                
-                <h2 className="font-headline mt-12">Recognizing the Symptoms</h2>
                 <p>
                     While early ovarian cancer may not cause obvious symptoms, as the tumor grows, it can create pressure on surrounding organs like the bladder and bowel. The key is to be aware of symptoms that are persistent and represent a change from what is normal for your body. If you experience the following symptoms almost daily for more than a few weeks, it is crucial to see a doctor, preferably a gynecologist:
                 </p>
@@ -53,44 +48,52 @@ export default function AwarenessPage() {
                     <li><strong>Urinary Symptoms:</strong> Needing to urinate more frequently or feeling a sense of urgency to urinate.</li>
                 </ul>
                 <p>
-                    Other symptoms that can also be associated with ovarian cancer include:
-                </p>
-                <ul>
-                    <li>Fatigue or extreme tiredness</li>
-                    <li>Upset stomach or heartburn</li>
-                    <li>Back pain</li>
-                    <li>Pain during intercourse</li>
-                    <li>Constipation</li>
-                    <li>Changes in your menstrual cycle, such as irregular bleeding or bleeding after menopause</li>
-                    <li>Unexplained weight loss</li>
-                </ul>
-                <p>
-                    It's important to remember that these symptoms can also be caused by many other less serious conditions. However, the persistence and combination of these symptoms are the warning signs that should prompt a medical consultation.
+                    Other symptoms can include fatigue, back pain, pain during intercourse, constipation, and changes in your menstrual cycle. It's important to remember that these symptoms can also be caused by many other less serious conditions. However, the persistence and combination of these symptoms are the warning signs that should prompt a medical consultation.
                 </p>
 
-                <h2 className="font-headline mt-12">Key Risk Factors</h2>
+                <h2 className="font-headline mt-12">Treatment Options</h2>
                 <p>
-                    While the exact cause of ovarian cancer is unknown, several factors can increase a woman's risk. Being aware of these risks is an important part of proactive health management.
+                  Treatment for ovarian cancer depends on several factors, including the type and stage of the cancer, the patient's overall health, and her personal preferences. The primary treatments are surgery and chemotherapy, often used in combination.
                 </p>
                 <ul>
-                    <li><strong>Age:</strong> The risk increases with age. Ovarian cancer is most common in women who have gone through menopause, with about half of all cases diagnosed in women over 60.</li>
-                    <li><strong>Genetic Mutations:</strong> Inheriting specific gene mutations is the most significant risk factor. The most well-known are the BRCA1 and BRCA2 genes, which are also linked to breast cancer. Mutations in genes associated with Lynch syndrome (a hereditary colorectal cancer syndrome) also increase the risk.</li>
-                    <li><strong>Family History:</strong> Having a close relative (mother, sister, daughter) with ovarian, breast, or colorectal cancer increases your risk.</li>
-                    <li><strong>Personal History of Cancer:</strong> A previous diagnosis of breast, uterine, or colorectal cancer can also increase the risk.</li>
-                    <li><strong>Hormone Replacement Therapy:</strong> Using estrogen-only hormone therapy after menopause for an extended period (5-10 years) has been linked to a higher risk.</li>
-                    <li><strong>Endometriosis:</strong> A condition where tissue similar to the lining inside the uterus grows outside the uterus.</li>
-                    <li><strong>Reproductive History:</strong> Women who have never been pregnant or had their first full-term pregnancy after age 35 may have a slightly higher risk.</li>
+                  <li><strong>Surgery:</strong> The main goal of surgery is to stage the cancer (determine how far it has spread) and to debulk it (remove as much of the tumor as possible). For early-stage cancer, the procedure might involve removing one or both ovaries and fallopian tubes. In more advanced cases, a total hysterectomy (removal of the uterus) along with nearby lymph nodes and parts of other affected organs might be necessary.</li>
+                  <li><strong>Chemotherapy:</strong> This involves using powerful drugs to kill cancer cells throughout the body. It is typically administered intravenously (IV) or, in some cases, directly into the abdominal cavity (intraperitoneal chemotherapy). Chemotherapy is often given after surgery to eliminate any remaining cancer cells and may also be used before surgery to shrink tumors.</li>
+                  <li><strong>Targeted Therapy:</strong> These are newer drugs that focus on specific abnormalities within cancer cells. For example, PARP inhibitors are a class of targeted drugs that can be highly effective for women with BRCA gene mutations. They work by blocking a protein that helps repair DNA in cancer cells, causing them to die.</li>
+                  <li><strong>Hormone Therapy:</strong> Some ovarian tumors use hormones to grow. Hormone therapy drugs can block these hormones or lower their levels. This treatment is more commonly used for stromal tumors.</li>
+                  <li><strong>Radiation Therapy:</strong> This uses high-energy rays to kill cancer cells. It is not frequently used as a primary treatment for ovarian cancer but may be used to treat areas where the cancer has spread.</li>
                 </ul>
+                <p>
+                  Clinical trials are also an important option, offering access to new and experimental treatments. Patients should discuss all available treatment paths with their oncology team to create a personalized plan.
+                </p>
 
                 <h2 className="font-headline mt-12">Prevention and Early Detection</h2>
                 <p>
-                    Although there is no guaranteed way to prevent ovarian cancer, some actions may lower the risk. These include taking oral contraceptives (birth control pills) for several years, having a full-term pregnancy, and breastfeeding. For individuals at very high risk due to genetic mutations, preventive surgery to remove the ovaries and fallopian tubes (a risk-reducing salpingo-oophorectomy) can significantly reduce the risk and is an option to discuss with a healthcare provider.
+                    While there is no guaranteed way to prevent ovarian cancer, certain factors can lower your risk. Being aware of these and taking proactive steps is crucial for your health.
                 </p>
+                <ul>
+                    <li><strong>Genetic Counseling and Testing:</strong> A strong family history of ovarian, breast, or colorectal cancer is a major risk factor. Inherited mutations in genes like BRCA1 and BRCA2 significantly increase risk. If you have a concerning family history, speak to your doctor about genetic counseling to assess your personal risk and discuss options for testing.</li>
+                    <li><strong>Lifestyle Choices:</strong> Maintaining a healthy weight, regular physical activity, and a balanced diet can contribute to lowering overall cancer risk.</li>
+                    <li><strong>Oral Contraceptives:</strong> Using birth control pills for five years or more has been shown to reduce the risk of developing ovarian cancer by as much as 50%.</li>
+                    <li><strong>Pregnancy and Breastfeeding:</strong> Women who have had a full-term pregnancy or have breastfed may have a reduced risk.</li>
+                    <li><strong>Preventive Surgery:</strong> For women at very high risk (e.g., those with a BRCA mutation), a risk-reducing salpingo-oophorectomy (removal of the ovaries and fallopian tubes) can drastically lower the risk. This is a significant decision with lifelong consequences and must be discussed thoroughly with a healthcare provider.</li>
+                </ul>
                 <p>
-                    Currently, there is no single reliable screening test for ovarian cancer for women who are at average risk and have no symptoms. However, for early detection, the most effective strategy is to listen to your body. Pay close attention to any new or persistent symptoms. Keep a record of what you're feeling and for how long. Do not dismiss your concerns. When you see a doctor, be specific about your symptoms and ask directly, "Could my symptoms be related to ovarian cancer?"
+                    Currently, there is no single reliable screening test for ovarian cancer for women at average risk. The most effective strategy for early detection is to listen to your body. Pay close attention to any new or persistent symptoms, keep a detailed record, and advocate for your health by asking your doctor directly about the possibility of ovarian cancer.
                 </p>
+
+                <h2 className="font-headline mt-12">The Role of Nutrition</h2>
                 <p>
-                    Regular pelvic exams, while important for overall gynecological health, are not always effective in detecting early-stage ovarian tumors. If you are at high risk, your doctor may recommend more frequent check-ups and possibly a combination of a transvaginal ultrasound and a CA-125 blood test. While not perfect, these tools can aid in monitoring and early detection for high-risk populations.
+                  Nutrition plays a vital role in both cancer prevention and in supporting the body during and after treatment. While no single food can prevent ovarian cancer, a healthy, balanced diet can lower your overall risk and improve your well-being.
+                </p>
+                <ul>
+                  <li><strong>Focus on a Plant-Based Diet:</strong> A diet rich in fruits, vegetables, whole grains, and legumes provides essential vitamins, minerals, and antioxidants. Antioxidants help protect your cells from damage that can lead to cancer. Aim to fill your plate with a variety of colorful produce.</li>
+                  <li><strong>Limit Processed Foods and Red Meat:</strong> Diets high in processed foods, red meats, and sugary drinks have been linked to an increased risk of several cancers. Try to choose lean proteins like fish and poultry, and whole, unprocessed foods whenever possible.</li>
+                  <li><strong>Maintain a Healthy Weight:</strong> Obesity is a known risk factor for ovarian cancer. A balanced diet, combined with regular physical activity, is the best way to maintain a healthy weight.</li>
+                  <li><strong>During Treatment:</strong> Good nutrition is especially important when undergoing cancer treatment. Chemotherapy and other treatments can cause side effects like nausea, loss of appetite, and fatigue. It is crucial to consume enough calories and protein to maintain strength, rebuild tissues, and support your immune system. A registered dietitian can provide personalized advice to help manage these side effects and ensure your nutritional needs are met.</li>
+                  <li><strong>Hydration:</strong> Staying well-hydrated by drinking plenty of water is essential for overall health and can help manage treatment side effects like fatigue and constipation.</li>
+                </ul>
+                <p>
+                  Always consult with your healthcare team or a registered dietitian before making significant changes to your diet, especially during cancer treatment.
                 </p>
             </div>
             <div className="flex flex-col items-center space-y-8">
