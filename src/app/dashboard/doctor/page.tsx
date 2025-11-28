@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Line, LineChart, CartesianGrid, XAxis, YAxis, Tooltip } from "recharts";
 import { ChartContainer, ChartTooltipContent } from "@/components/ui/chart";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Button } from '@/componentsa/ui/button';
+import { Button } from '@/components/ui/button';
 
 const patients = [
   { id: "1", name: "Jane Doe", age: 34, risk: "Medium" },
