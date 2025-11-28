@@ -51,6 +51,8 @@ export default function AboutPage() {
     }
   ]
 
+  const aboutImage = placeHolderImages.find((img) => img.id === "about-what-is-ovarian-cancer");
+
   return (
     <div className="flex flex-col min-h-screen">
       <SiteHeader />
@@ -83,14 +85,16 @@ export default function AboutPage() {
                 </p>
               </div>
               <div className="flex justify-center">
-                <Image
-                  src="https://images.unsplash.com/photo-1584985222472-53b5a15325c8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxoZWFsdGhjYXJlJTIwYWJzdHJhY3R8ZW58MHx8fHwxNzE2NDAxMzk1fDA&ixlib=rb-4.1.0&q=80&w=1080"
-                  alt="Abstract medical illustration with teal and white colors"
-                  data-ai-hint="medical abstract"
-                  width={550}
-                  height={310}
-                  className="rounded-xl shadow-lg"
-                />
+                {aboutImage && (
+                  <Image
+                    src={aboutImage.imageUrl}
+                    alt={aboutImage.description}
+                    data-ai-hint={aboutImage.imageHint}
+                    width={550}
+                    height={310}
+                    className="rounded-xl shadow-lg"
+                  />
+                )}
               </div>
             </div>
           </div>
