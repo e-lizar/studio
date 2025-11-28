@@ -84,9 +84,9 @@ export default function AboutPage() {
               </div>
               <div className="flex justify-center">
                 <Image
-                  src="https://picsum.photos/seed/about-ovarian-cancer/550/310"
-                  alt="Abstract medical illustration"
-                  data-ai-hint="medical illustration"
+                  src="https://images.unsplash.com/photo-1584985222472-53b5a15325c8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxoZWFsdGhjYXJlJTIwYWJzdHJhY3R8ZW58MHx8fHwxNzE2NDAxMzk1fDA&ixlib=rb-4.1.0&q=80&w=1080"
+                  alt="Abstract medical illustration with teal and white colors"
+                  data-ai-hint="medical abstract"
                   width={550}
                   height={310}
                   className="rounded-xl shadow-lg"
