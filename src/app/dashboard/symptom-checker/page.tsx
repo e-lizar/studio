@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,35 +11,58 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { summarizeSymptoms } from "./actions";
+import { analyzeSymptoms } from "./actions";
 import { AlertCircle, Bot, Loader2 } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 
 export default function SymptomCheckerPage() {
-  const [state, formAction, isPending] = useActionState(summarizeSymptoms, null);
-  const [medicalRecords, setMedicalRecords] = useState('');
+  const [state, formAction, isPending] = useActionState(analyzeSymptoms, null);
 
   return (
     <div className="max-w-3xl mx-auto">
       <Card className="shadow-lg">
-        <form action={() => formAction({ medicalRecords })}>
+        <form action={formAction}>
           <CardHeader>
             <CardTitle className="font-headline flex items-center gap-2"><Bot className="h-6 w-6 text-primary"/> AI Symptom Analysis</CardTitle>
             <CardDescription>
               Describe your symptoms and relevant medical history below. Our AI will provide a preliminary analysis to help you understand potential concerns. This is not a medical diagnosis.
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <Textarea
-              placeholder="e.g., For the past 2 weeks, I've had persistent bloating and feel full quickly. I have a family history of breast cancer..."
-              rows={8}
-              value={medicalRecords}
-              onChange={(e) => setMedicalRecords(e.target.value)}
-              required
-            />
+          <CardContent className="space-y-4">
+             <div className="grid sm:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                    <Label htmlFor="age">Your Age</Label>
+                    <Input id="age" name="age" type="number" placeholder="e.g., 45" required />
+                </div>
+                 <div className="space-y-2">
+                    <Label htmlFor="familyHistory">Family History</Label>
+                    <Input id="familyHistory" name="familyHistory" placeholder="e.g., Mother had breast cancer" />
+                </div>
+             </div>
+            <div className="space-y-2">
+                <Label htmlFor="symptoms">Symptoms</Label>
+                <Textarea
+                  id="symptoms"
+                  name="symptoms"
+                  placeholder="e.g., For the past 2 weeks, I've had persistent bloating and feel full quickly..."
+                  rows={6}
+                  required
+                />
+            </div>
+            <div className="space-y-2">
+                <Label htmlFor="additionalInfo">Additional Information (Optional)</Label>
+                <Textarea
+                    id="additionalInfo"
+                    name="additionalInfo"
+                    placeholder="e.g., I also have a history of endometriosis."
+                    rows={3}
+                />
+            </div>
           </CardContent>
           <CardFooter className="flex justify-end">
-            <Button type="submit" disabled={isPending || !medicalRecords.trim()}>
+            <Button type="submit" disabled={isPending}>
               {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Analyze Symptoms
             </Button>
@@ -71,8 +94,19 @@ export default function SymptomCheckerPage() {
                   Based on the information provided, here is a summary of key points.
                 </CardDescription>
               </CardHeader>
-              <CardContent className="prose prose-blue max-w-none dark:prose-invert">
-                <p>{state.data.summary}</p>
+              <CardContent className="space-y-6">
+                <div>
+                  <h3 className="font-semibold text-lg">Risk Assessment</h3>
+                  <p className="text-muted-foreground">{state.data.riskAssessment}</p>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-lg">Recommended Next Steps</h3>
+                  <p className="text-muted-foreground">{state.data.nextSteps}</p>
+                </div>
+                 <div>
+                  <h3 className="font-semibold text-lg">Confidence Level</h3>
+                  <p className="text-muted-foreground">{state.data.confidenceLevel}</p>
+                </div>
               </CardContent>
               <CardFooter>
                 <Alert variant="default" className="bg-primary/10 border-primary/20">

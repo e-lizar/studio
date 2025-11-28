@@ -1,25 +1,38 @@
 "use server";
 
-import { summarizeMedicalRecords, SummarizeMedicalRecordsOutput } from "@/ai/flows/summarize-medical-records";
+import { aiSymptomChecker, AISymptomCheckerInput, AISymptomCheckerOutput } from "@/ai/ai-symptom-checker";
 
 type FormState = {
     success: boolean;
-    data?: SummarizeMedicalRecordsOutput;
+    data?: AISymptomCheckerOutput;
     error?: string;
 } | null;
 
 
-export async function summarizeSymptoms(
+export async function analyzeSymptoms(
   prevState: FormState,
-  formData: { medicalRecords: string }
+  formData: FormData,
 ): Promise<FormState> {
-  const { medicalRecords } = formData;
-  if (!medicalRecords || medicalRecords.trim().length < 10) {
+  const symptoms = formData.get('symptoms') as string;
+  const age = formData.get('age') as string;
+  const familyHistory = formData.get('familyHistory') as string;
+  const additionalInfo = formData.get('additionalInfo') as string;
+
+  if (!symptoms || symptoms.trim().length < 10) {
     return { success: false, error: "Please provide a more detailed description of your symptoms." };
+  }
+  if (!age) {
+    return { success: false, error: "Please provide your age." };
   }
 
   try {
-    const result = await summarizeMedicalRecords({ medicalRecords });
+    const input: AISymptomCheckerInput = {
+        symptoms,
+        age: parseInt(age),
+        familyHistory: familyHistory || 'Not specified',
+        additionalInfo
+    };
+    const result = await aiSymptomChecker(input);
     return { success: true, data: result };
   } catch (e: any) {
     console.error(e);
