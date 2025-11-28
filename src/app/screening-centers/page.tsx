@@ -108,7 +108,7 @@ export default function ScreeningCentersPage() {
                                         </ul>
                                     </div>
                                 </div>
-                                <Dialog>
+                                <Dialog onOpenChange={(open) => !open && setSelectedCenter(null)}>
                                   <DialogTrigger asChild>
                                     <Button variant="outline" className="mt-4 w-full" onClick={() => setSelectedCenter(center)}>
                                         View Details
@@ -119,15 +119,16 @@ export default function ScreeningCentersPage() {
                                         <DialogHeader>
                                             <DialogTitle className='font-headline'>{selectedCenter.name}</DialogTitle>
                                             <DialogDescription>
-                                                <div className="flex items-center gap-2 text-muted-foreground mt-2">
-                                                    <MapPin className="h-4 w-4" />
-                                                    <span>{selectedCenter.location}</span>
-                                                </div>
-                                                <div className="flex items-center gap-2 text-muted-foreground">
-                                                    <Phone className="h-4 w-4" />
-                                                    <span>{selectedCenter.contact}</span>
-                                                </div>
+                                                Details for {selectedCenter.name}.
                                             </DialogDescription>
+                                            <div className="flex items-center gap-2 text-muted-foreground pt-2">
+                                                <MapPin className="h-4 w-4" />
+                                                <span>{selectedCenter.location}</span>
+                                            </div>
+                                            <div className="flex items-center gap-2 text-muted-foreground">
+                                                <Phone className="h-4 w-4" />
+                                                <span>{selectedCenter.contact}</span>
+                                            </div>
                                         </DialogHeader>
                                         <div className="grid gap-4 py-4">
                                             <div>
