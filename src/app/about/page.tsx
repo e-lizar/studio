@@ -75,28 +75,14 @@ export default function AboutPage() {
         {/* What Is Ovarian Cancer Section */}
         <section className="w-full py-12 md:py-24 lg:py-32">
           <div className="container px-4 md:px-6">
-            <div className="grid gap-10 md:grid-cols-2 lg:gap-16 items-center">
-              <div>
-                <h2 className="text-3xl font-bold tracking-tighter font-headline">What Is Ovarian Cancer?</h2>
-                <p className="mt-4 text-muted-foreground">
-                  Ovarian cancer is a disease where malignant cells form in the ovaries. Often called a 'silent killer,' its early symptoms can be subtle and easily mistaken for other conditions, leading to late-stage diagnoses.
-                </p>
-                <p className="mt-4 text-muted-foreground">
-                  The most common symptoms include persistent bloating, pelvic or abdominal pain, difficulty eating or feeling full quickly, and urinary urgency. When these symptoms are new and occur frequently, consulting a healthcare professional is crucial. ShujaaCare was created to help individuals recognize these early signs and seek timely medical advice.
-                </p>
-              </div>
-              <div className="flex justify-center">
-                {aboutImage && (
-                  <Image
-                    src={aboutImage.imageUrl}
-                    alt={aboutImage.description}
-                    data-ai-hint={aboutImage.imageHint}
-                    width={550}
-                    height={310}
-                    className="rounded-xl shadow-lg"
-                  />
-                )}
-              </div>
+            <div className="mx-auto max-w-3xl text-center">
+              <h2 className="text-3xl font-bold tracking-tighter font-headline">What Is Ovarian Cancer?</h2>
+              <p className="mt-4 text-muted-foreground">
+                Ovarian cancer is a disease where malignant cells form in the ovaries. Often called a 'silent killer,' its early symptoms can be subtle and easily mistaken for other conditions, leading to late-stage diagnoses.
+              </p>
+              <p className="mt-4 text-muted-foreground">
+                The most common symptoms include persistent bloating, pelvic or abdominal pain, difficulty eating or feeling full quickly, and urinary urgency. When these symptoms are new and occur frequently, consulting a healthcare professional is crucial. ShujaaCare was created to help individuals recognize these early signs and seek timely medical advice.
+              </p>
             </div>
           </div>
         </section>
