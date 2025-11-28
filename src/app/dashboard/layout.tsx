@@ -40,6 +40,7 @@ function AuthRedirect({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const firestore = useFirestore();
   const [role, setRole] = useState<string | null>(null);
+  const currentPath = usePathname();
 
   useEffect(() => {
     if (isUserLoading) return;
@@ -83,7 +84,6 @@ function AuthRedirect({ children }: { children: React.ReactNode }) {
     );
   }
 
-  const currentPath = usePathname();
   const allowedRoutes = menuItems.filter(item => item.roles.includes(role)).map(item => item.href);
   
   if (currentPath === '/dashboard' || !allowedRoutes.some(route => currentPath.startsWith(route))) {
