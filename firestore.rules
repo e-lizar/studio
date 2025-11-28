@@ -1,0 +1,176 @@
+/**
+ * @file firestore.rules
+ * @description Security rules for the ShujaaCare Firestore database.
+ *
+ * ## Core Philosophy
+ * This ruleset enforces a strict user-centric security model. Data is segregated into private user-owned documents and publicly readable content.
+ * Patients and Doctors can only access and manage their own profiles and related subcollections (like appointments). All other users, including other
+ * patients or doctors, are denied access to this private data. Public content, such as screening centers and educational resources, is readable
+ * by anyone but can only be managed by designated administrators.
+ *
+ * ## Data Structure
+ * - `/patients/{patientId}`: Stores private patient data. The `{patientId}` must match the user's Authentication UID.
+ * - `/doctors/{doctorId}`: Stores private doctor data. The `{doctorId}` must match the user's Authentication UID.
+ * - `/patients/{patientId}/appointments/{appointmentId}`: A subcollection storing appointments owned by the parent patient.
+ * - `/screening_centers/{screeningCenterId}`: Publicly readable data about screening centers.
+ * - `/ovarian_cancer_resources/{resourceId}`: Publicly readable educational articles.
+ * - `/roles_admin/{adminId}`: A special collection where the existence of a document grants administrative privileges to the user whose UID matches `{adminId}`.
+ *
+ * ## Key Security Decisions
+ * - User Privacy: Listing all documents in the `/patients` or `/doctors` collections is explicitly disallowed to prevent enumeration of user data.
+ * - Admin-Managed Content: All writes to public collections (`/screening_centers`, `/ovarian_cancer_resources`) are restricted to users who have an admin role document.
+ * - Secure Role Management: The `/roles_admin` collection is read-only from the client to prevent any user from escalating their own privileges. Admin roles must be granted out-of-band (e.g., via the Firebase Console or a trusted backend).
+ * - Default Deny: Access is denied by default. Rules only grant permissions explicitly.
+ *
+ * ## Denormalization for Authorization
+ * To ensure fast and simple authorization checks, this ruleset relies on path-based ownership. For example, access to an appointment at `/patients/USER_A/appointments/APP_123`
+ * is granted simply by checking if the requesting user's UID is `USER_A`. This avoids costly `get()` calls to other documents. For admin roles, we check for the existence of a
+ * document in `/roles_admin/{uid}`, which is a highly performant role-lookup pattern.
+ *
+ * ## Structural Segregation
+ * Private user data (e.g., `/patients`) is stored in separate collections from public data (e.g., `/screening_centers`). This clear separation ensures that list operations
+ * on public collections are safe and performant, as they don't risk exposing any private information.
+ */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // -------------------------------------------------------------------------
+    // Helper Functions
+    // -------------------------------------------------------------------------
+
+    /**
+     * Returns true if the user is authenticated.
+     */
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    /**
+     * Returns true if the authenticated user's UID matches the provided userId.
+     * This is the primary function for checking document ownership.
+     */
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    /**
+     * Returns true if the user is an owner AND the document already exists.
+     * Used for safe update and delete operations.
+     */
+    function isExistingOwner(userId) {
+      return isOwner(userId) && resource != null;
+    }
+
+    /**
+     * Returns true if the user has an admin role document.
+     * Admin status is granted by the existence of a doc in the /roles_admin collection.
+     */
+    function isAdmin() {
+      return isSignedIn() && exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid));
+    }
+
+    // -------------------------------------------------------------------------
+    // User Profile Collections
+    // -------------------------------------------------------------------------
+
+    /**
+     * @description Rules for a patient's own profile document.
+     * @path /patients/{patientId}
+     * @allow (auth.uid == 'patient123') can (create) their own profile at `/patients/patient123`.
+     * @deny (auth.uid == 'patient456') cannot (get) a profile at `/patients/patient123`.
+     * @principle Restricts access to a user's own data tree and prevents user enumeration.
+     */
+    match /patients/{patientId} {
+      allow get: if isOwner(patientId);
+      allow list: if false;
+      allow create: if isOwner(patientId) && request.resource.data.id == patientId;
+      allow update: if isExistingOwner(patientId) && request.resource.data.id == resource.data.id;
+      allow delete: if isExistingOwner(patientId);
+
+      /**
+       * @description Rules for a patient's appointments subcollection.
+       * @path /patients/{patientId}/appointments/{appointmentId}
+       * @allow (auth.uid == 'patient123') can (list) all documents in `/patients/patient123/appointments`.
+       * @deny (auth.uid == 'doctor789') cannot (get) an appointment at `/patients/patient123/appointments/appt456`.
+       * @principle Enforces ownership based on the parent document's path.
+       */
+      match /appointments/{appointmentId} {
+        allow get: if isOwner(patientId);
+        allow list: if isOwner(patientId);
+        allow create: if isOwner(patientId) && request.resource.data.patientId == patientId;
+        allow update: if isExistingOwner(patientId) && request.resource.data.patientId == resource.data.patientId;
+        allow delete: if isExistingOwner(patientId);
+      }
+    }
+
+    /**
+     * @description Rules for a doctor's own profile document.
+     * @path /doctors/{doctorId}
+     * @allow (auth.uid == 'doctor123') can (update) their own profile at `/doctors/doctor123`.
+     * @deny (auth.uid == 'patient456') cannot (get) a profile at `/doctors/doctor123`.
+     * @principle Restricts access to a user's own data tree and prevents user enumeration.
+     */
+    match /doctors/{doctorId} {
+      allow get: if isOwner(doctorId);
+      allow list: if false;
+      allow create: if isOwner(doctorId) && request.resource.data.id == doctorId;
+      allow update: if isExistingOwner(doctorId) && request.resource.data.id == resource.data.id;
+      allow delete: if isExistingOwner(doctorId);
+    }
+
+    // -------------------------------------------------------------------------
+    // Public & Admin-Managed Collections
+    // -------------------------------------------------------------------------
+
+    /**
+     * @description Rules for screening centers. Data is public, but writes require admin privileges.
+     * @path /screening_centers/{screeningCenterId}
+     * @allow Any user, signed in or not, can (get) or (list) screening centers.
+     * @deny A non-admin user cannot (create) a new screening center.
+     * @principle Segregates public read access from privileged write access.
+     */
+    match /screening_centers/{screeningCenterId} {
+      allow get: if true;
+      allow list: if true;
+      allow create: if isAdmin();
+      allow update: if isAdmin() && resource != null;
+      allow delete: if isAdmin() && resource != null;
+    }
+
+    /**
+     * @description Rules for educational resources. Data is public, but writes require admin privileges.
+     * @path /ovarian_cancer_resources/{resourceId}
+     * @allow Any user, signed in or not, can (get) or (list) cancer resources.
+     * @deny A non-admin user cannot (update) an existing resource.
+     * @principle Segregates public read access from privileged write access.
+     */
+    match /ovarian_cancer_resources/{resourceId} {
+      allow get: if true;
+      allow list: if true;
+      allow create: if isAdmin();
+      allow update: if isAdmin() && resource != null;
+      allow delete: if isAdmin() && resource != null;
+    }
+
+    // -------------------------------------------------------------------------
+    // Administrative Collections
+    // -------------------------------------------------------------------------
+
+    /**
+     * @description Rules for the admin roles collection. Existence of a document here grants admin rights.
+     * This collection is locked down to prevent client-side privilege escalation.
+     * @path /roles_admin/{adminId}
+     * @allow An admin user can (get) their own role document to confirm their status.
+     * @deny Any user, including an existing admin, cannot (create) a new admin role from the client.
+     * @principle Prevents privilege escalation by making role management an out-of-band operation.
+     */
+    match /roles_admin/{adminId} {
+      allow get: if isSignedIn();
+      allow list: if false;
+      allow create: if false;
+      allow update: if false;
+      allow delete: if false;
+    }
+  }
+}

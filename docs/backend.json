@@ -1,0 +1,370 @@
+{
+  "entities": {
+    "Patient": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Patient",
+      "type": "object",
+      "description": "Represents a patient using the ShujaaCare app.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Patient entity."
+        },
+        "firstName": {
+          "type": "string",
+          "description": "The first name of the patient."
+        },
+        "lastName": {
+          "type": "string",
+          "description": "The last name of the patient."
+        },
+        "dateOfBirth": {
+          "type": "string",
+          "description": "The date of birth of the patient.",
+          "format": "date-time"
+        },
+        "email": {
+          "type": "string",
+          "description": "The email address of the patient.",
+          "format": "email"
+        },
+        "phone": {
+          "type": "string",
+          "description": "The phone number of the patient."
+        },
+        "symptoms": {
+          "type": "array",
+          "description": "List of symptoms reported by the patient",
+          "items": {
+            "type": "string"
+          }
+        },
+        "medicalHistory": {
+          "type": "string",
+          "description": "The medical history for the patient."
+        }
+      },
+      "required": [
+        "id",
+        "firstName",
+        "lastName",
+        "dateOfBirth",
+        "email",
+        "phone"
+      ]
+    },
+    "Doctor": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Doctor",
+      "type": "object",
+      "description": "Represents a doctor using the ShujaaCare app.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Doctor entity."
+        },
+        "firstName": {
+          "type": "string",
+          "description": "The first name of the doctor."
+        },
+        "lastName": {
+          "type": "string",
+          "description": "The last name of the doctor."
+        },
+        "email": {
+          "type": "string",
+          "description": "The email address of the doctor.",
+          "format": "email"
+        },
+        "phone": {
+          "type": "string",
+          "description": "The phone number of the doctor."
+        },
+        "specialization": {
+          "type": "string",
+          "description": "The specialization of the doctor."
+        },
+        "hospital": {
+          "type": "string",
+          "description": "The hospital where the doctor works."
+        }
+      },
+      "required": [
+        "id",
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "specialization",
+        "hospital"
+      ]
+    },
+    "ScreeningCenter": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "ScreeningCenter",
+      "type": "object",
+      "description": "Represents a screening center in Kenya.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the ScreeningCenter entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the screening center."
+        },
+        "address": {
+          "type": "string",
+          "description": "The address of the screening center."
+        },
+        "latitude": {
+          "type": "number",
+          "description": "The latitude coordinate of the screening center."
+        },
+        "longitude": {
+          "type": "number",
+          "description": "The longitude coordinate of the screening center."
+        },
+        "contactNumber": {
+          "type": "string",
+          "description": "The contact number of the screening center."
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "address",
+        "latitude",
+        "longitude",
+        "contactNumber"
+      ]
+    },
+    "Appointment": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Appointment",
+      "type": "object",
+      "description": "Represents an appointment between a patient and a doctor.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Appointment entity."
+        },
+        "patientId": {
+          "type": "string",
+          "description": "Reference to Patient. (Relationship: Patient 1:N Appointment)"
+        },
+        "doctorId": {
+          "type": "string",
+          "description": "Reference to Doctor. (Relationship: Doctor 1:N Appointment)"
+        },
+        "screeningCenterId": {
+          "type": "string",
+          "description": "Reference to ScreeningCenter. (Relationship: ScreeningCenter 1:N Appointment)"
+        },
+        "appointmentDate": {
+          "type": "string",
+          "description": "The date and time of the appointment.",
+          "format": "date-time"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Any notes related to the appointment."
+        }
+      },
+      "required": [
+        "id",
+        "patientId",
+        "doctorId",
+        "appointmentDate"
+      ]
+    },
+    "OvarianCancerResource": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "OvarianCancerResource",
+      "type": "object",
+      "description": "Represents an educational resource related to ovarian cancer.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the OvarianCancerResource entity."
+        },
+        "title": {
+          "type": "string",
+          "description": "The title of the educational resource."
+        },
+        "content": {
+          "type": "string",
+          "description": "The content of the educational resource. Can be text or a link to another location."
+        },
+        "category": {
+          "type": "string",
+          "description": "The category of the educational resource (e.g., symptoms, risk factors, prevention)."
+        },
+        "publicationDate": {
+          "type": "string",
+          "description": "The date the educational resource was published.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "content",
+        "category",
+        "publicationDate"
+      ]
+    },
+    "Admin": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Admin",
+      "type": "object",
+      "description": "Represents an administrator user who can manage the app.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Admin entity."
+        },
+        "firstName": {
+          "type": "string",
+          "description": "The first name of the admin."
+        },
+        "lastName": {
+          "type": "string",
+          "description": "The last name of the admin."
+        },
+        "email": {
+          "type": "string",
+          "description": "The email address of the admin.",
+          "format": "email"
+        },
+        "phone": {
+          "type": "string",
+          "description": "The phone number of the admin."
+        },
+        "role": {
+          "type": "string",
+          "description": "The role of the admin (e.g., super admin, content manager)."
+        }
+      },
+      "required": [
+        "id",
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "role"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/patients/{patientId}",
+        "definition": {
+          "entityName": "Patient",
+          "schema": {
+            "$ref": "#/backend/entities/Patient"
+          },
+          "description": "Stores patient profiles. Access is restricted to the authenticated user with matching UID.",
+          "params": [
+            {
+              "name": "patientId",
+              "description": "The unique identifier for the patient, which matches the Firebase Auth UID."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/doctors/{doctorId}",
+        "definition": {
+          "entityName": "Doctor",
+          "schema": {
+            "$ref": "#/backend/entities/Doctor"
+          },
+          "description": "Stores doctor profiles. Access is restricted to the authenticated user with matching UID.",
+          "params": [
+            {
+              "name": "doctorId",
+              "description": "The unique identifier for the doctor, which matches the Firebase Auth UID."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/patients/{patientId}/appointments/{appointmentId}",
+        "definition": {
+          "entityName": "Appointment",
+          "schema": {
+            "$ref": "#/backend/entities/Appointment"
+          },
+          "description": "Stores appointments for a specific patient. Access is restricted to the patient (owner).",
+          "params": [
+            {
+              "name": "patientId",
+              "description": "The unique identifier for the patient."
+            },
+            {
+              "name": "appointmentId",
+              "description": "The unique identifier for the appointment."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/screening_centers/{screeningCenterId}",
+        "definition": {
+          "entityName": "ScreeningCenter",
+          "schema": {
+            "$ref": "#/backend/entities/ScreeningCenter"
+          },
+          "description": "Stores information about screening centers in Kenya. Publicly readable, but create/update restricted to admins.",
+          "params": [
+            {
+              "name": "screeningCenterId",
+              "description": "The unique identifier for the screening center."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/ovarian_cancer_resources/{resourceId}",
+        "definition": {
+          "entityName": "OvarianCancerResource",
+          "schema": {
+            "$ref": "#/backend/entities/OvarianCancerResource"
+          },
+          "description": "Stores educational resources related to ovarian cancer. Publicly readable, but create/update restricted to admins.",
+          "params": [
+            {
+              "name": "resourceId",
+              "description": "The unique identifier for the ovarian cancer resource."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/roles_admin/{adminId}",
+        "definition": {
+          "entityName": "Admin",
+          "schema": {
+            "$ref": "#/backend/entities/Admin"
+          },
+          "description": "Stores document for admins. Existence of document grants admin privileges.",
+          "params": [
+            {
+              "name": "adminId",
+              "description": "The unique identifier for the admin, which matches the Firebase Auth UID."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore data structure is designed to support the ShujaaCare application, focusing on user authentication, AI-powered symptom checking, awareness resources, screening center locations, and dashboards for patients and doctors. The structure prioritizes authorization independence and clear security rules by denormalizing authorization data and segregating data based on access needs. The design uses path-based ownership for user-specific data and membership maps for collaborative data (if required in future). It also leverages dedicated collections for global roles, ensuring efficient and secure `list` operations (QAPs). \n\nSpecifically, patients and doctors have their own collections, and appointments are stored in a subcollection of the patient to ensure data locality and ease of access for a particular patient's appointments. The `OvarianCancerResource` collection stores the awareness and educational material. The `ScreeningCenter` collection stores information on various screening centers. Access control is managed via Firestore security rules based on the `request.auth.uid` and, where necessary, role-based checks via existence checks in dedicated role collections.  No custom claims are required (DBAC).\n\n**Authorization Independence:** The structure avoids hierarchical authorization dependencies by storing user information directly in the respective `patients` and `doctors` collections, allowing independent authorization checks without needing to `get()` parent documents. This supports atomic operations and simplifies security rules.\n\n**QAPs (Rules are not Filters):** The data segregation ensures that `list` operations are secure because each collection contains data with homogenous security requirements. For example, listing patients only requires checking for the existence of the `patients/{patientId}` document, not filtering based on document content.\n\n**Invariants:** Ownership is enforced via path-based rules (e.g., `/users/{userId}/appointments/{appointmentId}`). Timestamps can be added to documents to track creation/modification times and can be validated in security rules."
+  }
+}
