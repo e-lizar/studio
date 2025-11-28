@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useActionState, useEffect, useMemo } from "react";
+import React, { useActionState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -25,7 +25,7 @@ import { Calendar as CalendarIcon, Loader2 } from "lucide-react";
 import { bookAppointment } from "./actions";
 import { useToast } from "@/hooks/use-toast";
 import { useCollection, useFirestore, useMemoFirebase } from "@/firebase";
-import { collection, query, where } from "firebase/firestore";
+import { collection, query } from "firebase/firestore";
 import type { Doctor } from "@/types";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -103,7 +103,7 @@ export default function BookAppointmentPage() {
                   />
                 </PopoverContent>
               </Popover>
-               <Input type="hidden" name="appointmentDate" value={date?.toISOString()}/>
+               <Input type="hidden" name="appointmentDate" value={date?.toISOString() ?? ""} />
             </div>
             <div className="space-y-2">
               <Label htmlFor="notes">Reason for Appointment</Label>
@@ -116,7 +116,7 @@ export default function BookAppointmentPage() {
             </div>
           </CardContent>
           <CardFooter>
-            <Button type="submit" disabled={isPending}>
+            <Button type="submit" disabled={isPending || !date}>
               {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Book Appointment
             </Button>

@@ -1,9 +1,9 @@
-
 "use server";
 
-import { useFirestore, useUser, addDocumentNonBlocking } from "@/firebase";
-import { collection, doc } from "firebase/firestore";
+import { initializeFirebase } from "@/firebase";
+import { addDoc, collection } from "firebase/firestore";
 import { revalidatePath } from "next/cache";
+import { getAuth } from "firebase/auth";
 
 type FormState = {
   success: boolean;
@@ -14,16 +14,16 @@ export async function bookAppointment(
   prevState: FormState,
   formData: FormData
 ): Promise<FormState> {
-  const firestore = useFirestore();
-  const { user } = useUser();
-
-  const doctorId = formData.get("doctorId") as string;
-  const appointmentDate = formData.get("appointmentDate") as string;
-  const notes = formData.get("notes") as string;
+  const { firestore, auth } = initializeFirebase();
+  const user = auth.currentUser;
   
   if (!user) {
     return { success: false, message: "You must be logged in to book an appointment." };
   }
+
+  const doctorId = formData.get("doctorId") as string;
+  const appointmentDate = formData.get("appointmentDate") as string;
+  const notes = formData.get("notes") as string;
 
   if (!doctorId || !appointmentDate) {
     return { success: false, message: "Please select a doctor and an appointment date." };
@@ -38,7 +38,7 @@ export async function bookAppointment(
     };
     
     const appointmentsRef = collection(firestore, "patients", user.uid, "appointments");
-    await addDocumentNonBlocking(appointmentsRef, appointmentData);
+    await addDoc(appointmentsRef, appointmentData);
 
     revalidatePath("/dashboard/patient");
     return { success: true, message: "Appointment booked successfully!" };
