@@ -3,7 +3,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { placeHolderImages } from "@/lib/placeholder-images";
 import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Eye, Heart, Lightbulb, Users } from "lucide-react";
 
 export default function AboutPage() {
