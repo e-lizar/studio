@@ -1,33 +1,42 @@
+
 "use client";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { ArrowRight, Calendar, FileText, Plus } from "lucide-react";
+import { ArrowRight, Calendar, CheckCircle, HeartPulse, Pilcrow, Plus, ThumbsDown, ThumbsUp, XCircle } from "lucide-react";
 import Link from "next/link";
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 
-const symptomData = [
-  { date: "May 1", severity: 2 },
-  { date: "May 2", severity: 3 },
-  { date: "May 3", severity: 2 },
-  { date: "May 4", severity: 4 },
-  { date: "May 5", severity: 3 },
-  { date: "May 6", severity: 5 },
-  { date: "May 7", severity: 4 },
+const healthStatus = {
+    riskLevel: 'Low',
+    lastCheckup: '2024-05-15',
+    doctorNotes: 'Patient is stable. Continue monitoring symptoms and follow prescribed medication plan.'
+};
+
+const pastAppointments = [
+  { id: 1, doctor: "Dr. Evelyn Reed", date: "2024-05-15", time: "10:30 AM", type: "Follow-up", notes: "Discussed lab results. Stable." },
+  { id: 2, doctor: "Dr. Ben Carter", date: "2024-02-10", time: "02:00 PM", type: "Screening", notes: "Initial screening. No abnormalities." },
 ];
 
-const appointments = [
-  { id: 1, doctor: "Dr. Evelyn Reed", date: "2024-06-15", time: "10:30 AM", type: "Follow-up" },
-  { id: 2, doctor: "Dr. Ben Carter", date: "2024-07-02", time: "02:00 PM", type: "Screening" },
+const medications = [
+    { id: 1, name: 'Vitamin D3', dosage: '2000 IU', frequency: 'Once Daily' },
+    { id: 2, name: 'Calcium', dosage: '500 mg', frequency: 'Twice Daily' },
 ];
 
-const medicalRecords = [
-  { id: 1, title: "Lab Results - May 2024", date: "2024-05-20" },
-  { id: 2, title: "Consultation Notes - Dr. Reed", date: "2024-05-15" },
-  { id: 3, title: "Initial Screening Report", date: "2024-04-10" },
+const dos = [
+    "Engage in light to moderate exercise 3-4 times a week.",
+    "Follow a balanced diet rich in fruits, vegetables, and lean protein.",
+    "Attend all scheduled follow-up appointments.",
+    "Practice stress-reduction techniques like meditation or yoga."
 ];
+
+const donts = [
+    "Do not miss any doses of your prescribed medications.",
+    "Avoid smoking and excessive alcohol consumption.",
+    "Do not ignore new or worsening symptoms; report them promptly.",
+    "Avoid processed foods high in sugar and unhealthy fats."
+];
+
 
 export default function PatientDashboardPage() {
   return (
@@ -45,56 +54,59 @@ export default function PatientDashboardPage() {
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <Card className="col-span-1 lg:col-span-2 shadow-sm">
-          <CardHeader>
-            <CardTitle className="font-headline">Symptom Severity Tracker</CardTitle>
-            <CardDescription>Last 7 days</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ChartContainer config={{
-              severity: {
-                label: 'Severity',
-                color: 'hsl(var(--primary))',
-              },
-            }} className="h-[250px] w-full">
-              <BarChart accessibilityLayer data={symptomData} margin={{ top: 20, right: 20, bottom: 20, left: 0 }}>
-                <CartesianGrid vertical={false} />
-                <XAxis dataKey="date" tickLine={false} axisLine={false} tickMargin={8} />
-                <YAxis hide/>
-                <ChartTooltip content={<ChartTooltipContent />} />
-                <Bar dataKey="severity" fill="var(--color-severity)" radius={4} />
-              </BarChart>
-            </ChartContainer>
-          </CardContent>
+        <Card className="lg:col-span-1 shadow-sm">
+            <CardHeader>
+                <CardTitle className="font-headline flex items-center gap-2"><HeartPulse className="h-5 w-5 text-primary" /> Current Health Status</CardTitle>
+                <CardDescription>An overview of your current health.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+                <div>
+                    <h4 className="font-semibold">Risk Level</h4>
+                    <p className="text-muted-foreground">{healthStatus.riskLevel}</p>
+                </div>
+                <div>
+                    <h4 className="font-semibold">Last Check-up</h4>
+                    <p className="text-muted-foreground">{healthStatus.lastCheckup}</p>
+                </div>
+                <div>
+                    <h4 className="font-semibold">Doctor's Notes</h4>
+                    <p className="text-muted-foreground text-sm">{healthStatus.doctorNotes}</p>
+                </div>
+            </CardContent>
         </Card>
 
-        <Card className="shadow-sm">
-          <CardHeader>
-            <CardTitle className="font-headline flex items-center gap-2"><FileText className="h-5 w-5" /> Medical Records</CardTitle>
-            <CardDescription>Your recent health documents.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ul className="space-y-3">
-              {medicalRecords.map(record => (
-                <li key={record.id} className="flex items-center justify-between text-sm">
-                  <div>
-                    <p className="font-medium">{record.title}</p>
-                    <p className="text-muted-foreground">{record.date}</p>
-                  </div>
-                  <Button variant="ghost" size="icon">
-                    <ArrowRight className="h-4 w-4"/>
-                  </Button>
-                </li>
-              ))}
-            </ul>
-          </CardContent>
+        <Card className="lg:col-span-2 shadow-sm">
+            <CardHeader>
+                <CardTitle className="font-headline flex items-center gap-2"><Pilcrow className="h-5 w-5 text-primary" /> Medications</CardTitle>
+                <CardDescription>Your prescribed medications.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead>Medication</TableHead>
+                            <TableHead>Dosage</TableHead>
+                            <TableHead>Frequency</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {medications.map(med => (
+                            <TableRow key={med.id}>
+                                <TableCell className="font-medium">{med.name}</TableCell>
+                                <TableCell>{med.dosage}</TableCell>
+                                <TableCell>{med.frequency}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </CardContent>
         </Card>
       </div>
 
       <Card className="shadow-sm">
         <CardHeader>
-          <CardTitle className="font-headline flex items-center gap-2"><Calendar className="h-5 w-5" /> Upcoming Appointments</CardTitle>
-          <CardDescription>Manage your scheduled visits.</CardDescription>
+          <CardTitle className="font-headline flex items-center gap-2"><Calendar className="h-5 w-5" /> Past Appointments</CardTitle>
+          <CardDescription>Your appointment history.</CardDescription>
         </CardHeader>
         <CardContent>
           <Table>
@@ -102,20 +114,22 @@ export default function PatientDashboardPage() {
               <TableRow>
                 <TableHead>Doctor</TableHead>
                 <TableHead>Date</TableHead>
-                <TableHead>Time</TableHead>
                 <TableHead>Type</TableHead>
+                <TableHead>Notes</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {appointments.map(appt => (
+              {pastAppointments.map(appt => (
                 <TableRow key={appt.id}>
                   <TableCell className="font-medium">{appt.doctor}</TableCell>
                   <TableCell>{appt.date}</TableCell>
-                  <TableCell>{appt.time}</TableCell>
                   <TableCell>{appt.type}</TableCell>
+                  <TableCell className="max-w-[200px] truncate">{appt.notes}</TableCell>
                   <TableCell className="text-right">
-                    <Button variant="outline" size="sm">Reschedule</Button>
+                    <Button variant="ghost" size="icon">
+                        <ArrowRight className="h-4 w-4"/>
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}
@@ -123,6 +137,38 @@ export default function PatientDashboardPage() {
           </Table>
         </CardContent>
       </Card>
+
+      <Card className="shadow-sm">
+        <CardHeader>
+            <CardTitle className="font-headline">Health Dos & Don'ts</CardTitle>
+            <CardDescription>Guidelines for maintaining your well-being.</CardDescription>
+        </CardHeader>
+        <CardContent className="grid md:grid-cols-2 gap-6">
+            <div>
+                <h3 className="font-semibold flex items-center gap-2 text-green-600 mb-2"><ThumbsUp className="h-5 w-5" /> Dos</h3>
+                <ul className="space-y-2">
+                    {dos.map((item, index) => (
+                        <li key={index} className="flex items-start gap-2">
+                            <CheckCircle className="h-5 w-5 text-green-600 mt-1 shrink-0" /> 
+                            <span className="text-muted-foreground">{item}</span>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+            <div>
+                <h3 className="font-semibold flex items-center gap-2 text-destructive mb-2"><ThumbsDown className="h-5 w-5" /> Don'ts</h3>
+                 <ul className="space-y-2">
+                    {donts.map((item, index) => (
+                        <li key={index} className="flex items-start gap-2">
+                            <XCircle className="h-5 w-5 text-destructive mt-1 shrink-0" />
+                            <span className="text-muted-foreground">{item}</span>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        </CardContent>
+      </Card>
+
     </div>
   );
 }
